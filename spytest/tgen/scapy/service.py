@@ -1,6 +1,6 @@
 import os
 import Pyro4
-import threading
+#import threading
 from datetime import datetime
 
 from server import ScapyServer
