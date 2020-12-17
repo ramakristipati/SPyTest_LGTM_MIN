@@ -4196,7 +4196,7 @@ def config_bgp(dut, **kwargs):
                         if not delete_rest(dut,rest_url=url):
                             st.error("failed to delete remote-as")
 
-                    config_remote_as = False
+                    #config_remote_as = False
 
                 if config_default_activate and (activate or neighbor):
                     if config_cmd == "":
@@ -4398,7 +4398,7 @@ def config_bgp(dut, **kwargs):
                     common_data["afi-safis"]["afi-safi"].append(neigh_data_sub)
                     #prefix_list = None
                 elif default_originate:
-                    family = kwargs.get('addr_family', "ipv4")
+                    #family = kwargs.get('addr_family', "ipv4")
                     #if family == "ipv6":
                         #afi_safi_name = "openconfig-bgp-types:IPV6_UNICAST"
                     #else:
