@@ -1192,7 +1192,7 @@ class TestBGPIPvxRouteAdvertisementFilter:
     @pytest.mark.community_pass
     def test_distribute_list_in_ipv4(self, bgp_ipvx_route_adv_filter_fixture):
 
-        if st.get_ui_type() in ['klish']:
+        if st.get_ui_type() in ['klish','rest-patch','rest-put']:
             st.report_unsupported('test_execution_skipped',
                                   'Skipping Distribute list test case for ui_type={}'.format(st.get_ui_type()))
 
@@ -2141,7 +2141,7 @@ class TestBGPIPvxRouteAdvertisementFilter:
                                            select=['network', 'as_path', 'metric'])
 
         metric = bgplib.get_route_attribute(output, 'metric', network = '2012:1::/64')
-        if metric == '50':
+        if (metric == '50' or metric == int('50')):
             st.log('static blackhole route with metric 50 redistributed from dut1 to dut2')
             result = True
         else:

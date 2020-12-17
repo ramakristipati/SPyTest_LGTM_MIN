@@ -1543,11 +1543,11 @@ def test_ft_snmp_basic_counters():
     snmp_obj.walk_snmp_operation(ipaddress=ipaddress, oid=data.oid_sysName,
                                  community_name=data.ro_community, filter=data.filter)
 
-    output = snmp_obj.verify_snmp_counters(vars.D1, map={"snmp_packets_input": 0, "requested_variables": 0,
-                                                         "get_request_pdus": 0, "get_next_pdus": 0,
-                                                         "snmp_packets_output": 0, "response_pdus": 0})
+    output = snmp_obj.verify_snmp_counters(vars.D1, map={"snmp_packets_input": 2, "requested_variables": 2,
+                                                         "get_request_pdus": 1, "get_next_pdus": 1,
+                                                         "snmp_packets_output": 2, "response_pdus": 2})
 
-    if output:
+    if not output:
         st.report_fail("snmp_counter_not_incremented")
     st.report_pass("test_case_passed")
 
@@ -1564,9 +1564,9 @@ def test_ft_snmp_trap_counter():
     intf_obj.interface_shutdown(vars.D1, vars.D1T1P1)
     intf_obj.interface_noshutdown(vars.D1, vars.D1T1P1)
 
-    result = snmp_obj.verify_snmp_counters(vars.D1, map={"trap_pdus":0})
+    result = snmp_obj.verify_snmp_counters(vars.D1, map={"trap_pdus":3})
 
-    if result:
+    if not result:
         st.report_fail("snmp_counter_not_incremented")
     st.report_pass("test_case_passed")
 
@@ -1586,8 +1586,9 @@ def test_ft_snmp_counter_negative_tests():
     snmp_obj.walk_snmp_operation(ipaddress=ipaddress, version='1', oid=data.oid_sysName,
                                  community_name=data.ro_community, filter=data.filter, report=False)
 
-    output = snmp_obj.verify_snmp_counters(vars.D1, map={"unknown_community_name": 0, "snmp_version_errors": 0})
+    output = snmp_obj.verify_snmp_counters(vars.D1, map={"unknown_community_name": 6, "snmp_version_errors": 6})
 
-    if output:
+    if not output:
         st.report_fail("snmp_counter_not_incremented")
     st.report_pass("test_case_passed")
+

@@ -18,6 +18,7 @@ def bgp_sp_module_hooks(request):
     bgp_cli_type = st.get_ui_type()
     if bgp_cli_type == 'click':
         bgp_cli_type = 'vtysh'
+    bgp_cli_type = 'klish' if bgp_cli_type in ["rest-patch", "rest-put"] else bgp_cli_type
     BGPSP.bgp_sp_setup_testbed_topology()
 
     pre_config = True
@@ -992,7 +993,7 @@ class TestBGP_STAR_IBGP:
             st.log("BGP SP - Configuring client reflection on {} bgp asn {}".format(core_dut, core_asn))
             result = BGPSP.bgp_sp_bgp_neighbor_route_reflector_config_unconfig(core_dut, nbr_list=[], addr_family='all' )
 
-        #import pdb;pdb.set_trace()
+
         if result :
             st.wait(60)
             st.log("BGP SP - verify every spoke has other spokes network due to root reflection")

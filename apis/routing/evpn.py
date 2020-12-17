@@ -846,7 +846,7 @@ def verify_bgp_l2vpn_evpn_summary(dut,**kwargs):
                             try:
                                 index_num = kwargs["neighbor"].index(evpn_neigh)
                                 exp_status=kwargs["updown"][index_num]
-                                if neigh['state']['prefixes']['received'] > 0:
+                                if neigh['state']['prefixes']['received'] >= 0:
                                     status="up"
                                 else:
                                     status="down"

@@ -732,7 +732,7 @@ def config(dut, params):
             if not value.get("no_form"):
                 command += " {}".format(value.get("name"))
                 if value.get("group_name"):
-                    command += " groupname {}".format(value.get("group_name"))
+                    command += " group {}".format(value.get("group_name"))
             else:
                 command = "no {} {}".format(command, value.get("name"))
             if command:
@@ -1016,11 +1016,12 @@ def verify_snmp_counters(dut, **kwargs):
     if not map:
         st.error("Mandatory fields missing to verify the output for snmp counters")
         return False
-    match_found=True
     for key, value in map.items():
         if int(output[0][key]) != value:
-            match_found = False
-    return match_found
+            st.error('Match not found for %s :: Expected: %s  Actual : %s' % (key, value, output[0][key]))
+            return False
+        st.log('Match Found for %s :: Expected: %s  Actual : %s' % (key, value, output[0][key]))
+    return True
 
 def verify(dut, **kwargs):
     """
@@ -1207,3 +1208,75 @@ def config_agentx(dut, config='yes', cli_type=''):
     cmd = config + ' agentx'
     st.config(dut, cmd, type=cli_type)
 
+def set_snmp_operation(**kwargs):
+    """
+    To perform SNMP SET operation
+    Author : Prudvi Mangadu (prudvi.mangadu@broadcom.com)
+
+    :param :ipaddress:
+    :param :oid:
+    :param :community_name:
+    :param :timeout:
+    :param :object_name:
+    :return:
+    """
+    community_name = kwargs.get("community_name")
+    ip_address = kwargs.get("ipaddress")
+    oid = kwargs.get("oid")
+    object_type = kwargs.get("objtype")
+    object_name = kwargs.get("objname")
+    version = kwargs.get("version", "2")
+    connection_obj = kwargs.get("connection_obj")
+    filter = kwargs.get("filter", "-Oqv")
+    report=False
+
+    command = 'snmpset'
+    if version not in ["1", "2"]:
+        st.log("Unsupported version provided")
+        return False
+    if not ip_address or not oid:
+        st.log("Mandatory parameters like ipaddress or/and oid not passed")
+        return False
+    if version in ["1", "2"]:
+        if not community_name:
+            st.log("Mandatory parameter community_name not passed")
+            return False
+        act_version = "1" if version == "1" else "2c"
+        snmp_command = "{} {} -v {} -c {} {} {}".format(command, filter, act_version, community_name,
+                                                        ip_address, oid)
+        if object_name:
+            snmp_command = "{} {} -v {} -c {} {} {} {} '{}'".format(command, filter, act_version, community_name, ip_address,
+                                                               oid, object_type, object_name)
+        st.log("snmp command:{}".format(snmp_command))
+        pprocess = subprocess.Popen(snmp_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                universal_newlines=True)
+        (stdout, stderr) = pprocess.communicate()
+        st.log("SNMP stdout: {}".format(stdout))
+        if pprocess.poll() is not None:
+            if pprocess.returncode == 0 \
+                    and "No Such Object available on this agent at this OID" not in stdout \
+                    and "No Such Instance currently exists at this OID" not in stdout \
+                    and "No more" not in stdout:
+                result = stdout.rstrip('\n').split("\n")
+                result1 = [each.replace('"', '') for each in result]
+                return result1
+            elif "Timeout" in stderr:
+                st.error("SNMP Timeout occurs")
+                if report:
+                    st.report_fail('snmp_operation_fail', 'SET', 'Timeout')
+                return False
+            elif "No Such Instance currently exists at this OID" in stdout:
+                result = stderr.strip("\n")
+                st.error(result)
+                if report:
+                    st.report_fail('snmp_operation_fail', 'SET', 'No Instance Found')
+                return False
+            else:
+                st.log("SNMP Error: return code = {}".format(pprocess.returncode))
+                st.log("SNMP stdout: {}".format(stdout))
+                st.error("SNMP stderr: {}".format(stderr))
+                if report:
+                    st.report_fail('snmp_operation_fail', 'SET', 'Error')
+                return False
+
+    return True

@@ -3376,8 +3376,9 @@ class BGPSP:
     def bgp_sp_route_map_config_unconfig(dut, rmap_name, condition='permit', sequence='', config='yes', **kwargs):
 
         cli_type = st.get_ui_type(dut, cli_type="")
-        cli_type = "vtysh" if cli_type in ['click', "vtysh"] else cli_type
-
+        # cli_type = "vtysh" if cli_type in ['click', "vtysh"] else cli_type
+        # cli_type = "vtysh" if cli_type in ["rest-patch", "rest-put"] else cli_type
+        cli_type = "vtysh" if cli_type in ['click', "vtysh"] else ("klish" if cli_type in ["rest-patch", "rest-put"] else cli_type)
         action_str = 'Config' if config == 'yes' else 'Unconfig'
         st.log("{}uring route map".format(action_str))
 
