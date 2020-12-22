@@ -82,11 +82,6 @@ def verify(dut, *argv, **kwargs):
     out = show(dut, *argv, **kwargs)
     if 'logged_users' in argv or kwargs.get('user_group'):
         for each in make_list(kwargs.get('verify_list')):
-            if cli_type == "click":
-                if not filter_and_select(out, None, each):
-                    st.log("{} - {} is not match".format(each, out))
-                    result = False
-            else:
                 out[0]['secondary_group'] = re.findall(r'\(([^)]+)', out[0]['secondary_group'])
                 if each['group'] == 'sudo':
                     each['group'] = 'operator'
