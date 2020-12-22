@@ -15,7 +15,6 @@ import apis.routing.arp as arp_obj
 import apis.system.port as port_obj
 import apis.system.rest as rest_obj
 import spytest.utils as utils
-import apis.system.reboot as reboot_obj
 
 from utilities.parallel import exec_all, exec_parallel, ensure_no_exception
 from utilities.common import ExecAllFunc
@@ -627,7 +626,7 @@ def test_member_status_after_portch_down():
     clear_intf_counters_using_thread([vars.D1, vars.D2])
     verify_traffic_hashed_or_not(vars.D1, vars.D1D2P1, 100)
     st.log("performing Config save")
-    reboot_obj.config_save_reload([vars.D1, vars.D2])
+    config_save_reload([vars.D1, vars.D2])
     st.log("Verifying interfaces")
     if not utils.poll_wait(intf_obj.verify_interface_status, 5, vars.D1,vars.D1D2P1, 'admin', 'down'):
         issue+=1
