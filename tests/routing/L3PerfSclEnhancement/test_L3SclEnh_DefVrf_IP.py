@@ -763,8 +763,6 @@ def test_L3Scl_004(L3Scl_fixture_004):
                   'as_path'    : 'as_seq:100',
                   'prefix'     : data.prefix1
                 }
-    ctrl_start = { 'mode' : 'start'}
-    #ctrl_stop = { 'mode' : 'stop'}
 
     # Configuring BGP device on top of interface.
     # Initializing dict_vars for easy readability.
@@ -781,7 +779,6 @@ def test_L3Scl_004(L3Scl_fixture_004):
                   'prefix'     : data.prefix2
                 }
     ctrl_start = { 'mode' : 'start'}
-    #ctrl_stop = { 'mode' : 'stop'}
 
     # Configuring the BGP router.
     bgp_rtr2 = tgapi.tg_bgp_config(tg = tg2,
@@ -889,11 +886,11 @@ def test_L3Scl_004(L3Scl_fixture_004):
 
     tg1.tg_traffic_control(action='clear_stats',port_handle=tg_ph_1)
     tg2.tg_traffic_control(action='clear_stats',port_handle=tg_ph_2)
-    st.log("BOUND_STREAM: " + str(tr1))
-    st.log("BOUND_STREAM: " + str(tr2))
-    st.log("BOUND_STREAM: " + str(tr3))
-    st.log("BOUND_STREAM: " + str(tr4))
-    res = tg1.tg_traffic_control(action='run',
+    st.log("BOUND_STREAM-1: " + str(tr1))
+    st.log("BOUND_STREAM-2: " + str(tr2))
+    st.log("BOUND_STREAM-3: " + str(tr3))
+    st.log("BOUND_STREAM-4: " + str(tr4))
+    tg1.tg_traffic_control(action='run',
                                  handle=[tr1['stream_id'], tr2['stream_id'], tr3['stream_id'], tr4['stream_id']])
     st.wait(5)
     res = tg1.tg_traffic_control(action='stop',
@@ -907,8 +904,6 @@ def test_L3Scl_004(L3Scl_fixture_004):
 
     traffic_params = {'1': {'tx_ports' : [vars.T1D1P1], 'tx_obj' : [tg1],'exp_ratio' : [1],'rx_ports' : [vars.T1D2P1], 'rx_obj' : [tg2]}}
     aggrResult = tgapi.validate_tgen_traffic(traffic_details = traffic_params, mode = 'aggregate', comp_type = 'packet_count')
-
-    aggrResult = tgapi.validate_tgen_traffic(traffic_details = traffic_params, mode = 'aggregate', comp_type = 'packet_count')
     if aggrResult:
         st.log('Traffic verification passed for mode aggregate')
     else:
@@ -917,8 +912,6 @@ def test_L3Scl_004(L3Scl_fixture_004):
         st.log('Traffic verification failed for mode aggregate')
 
     traffic_params = {'1': {'tx_ports' : [vars.T1D2P1], 'tx_obj' : [tg2],'exp_ratio' : [1],'rx_ports' : [vars.T1D1P1], 'rx_obj' : [tg1]}}
-    aggrResult = tgapi.validate_tgen_traffic(traffic_details = traffic_params, mode = 'aggregate', comp_type = 'packet_count')
-
     aggrResult = tgapi.validate_tgen_traffic(traffic_details = traffic_params, mode = 'aggregate', comp_type = 'packet_count')
     if aggrResult:
         st.log('Traffic verification passed for mode aggregate')
@@ -963,11 +956,11 @@ def test_L3Scl_004(L3Scl_fixture_004):
 
     tg1.tg_traffic_control(action='clear_stats',port_handle=tg_ph_1)
     tg2.tg_traffic_control(action='clear_stats',port_handle=tg_ph_2)
-    st.log("BOUND_STREAM: " + str(tr1))
-    st.log("BOUND_STREAM: " + str(tr2))
-    st.log("BOUND_STREAM: " + str(tr3))
-    st.log("BOUND_STREAM: " + str(tr4))
-    res = tg1.tg_traffic_control(action='run',
+    st.log("BOUND_STREAM-1: " + str(tr1))
+    st.log("BOUND_STREAM-2: " + str(tr2))
+    st.log("BOUND_STREAM-3: " + str(tr3))
+    st.log("BOUND_STREAM-4: " + str(tr4))
+    tg1.tg_traffic_control(action='run',
                                  handle=[tr1['stream_id'], tr2['stream_id'], tr3['stream_id'], tr4['stream_id']])
     st.wait(5)
     res = tg1.tg_traffic_control(action='stop',
@@ -981,8 +974,6 @@ def test_L3Scl_004(L3Scl_fixture_004):
 
     traffic_params = {'1': {'tx_ports' : [vars.T1D1P1], 'tx_obj' : [tg1],'exp_ratio' : [1],'rx_ports' : [vars.T1D2P1], 'rx_obj' : [tg2]}}
     aggrResult = tgapi.validate_tgen_traffic(traffic_details = traffic_params, mode = 'aggregate', comp_type = 'packet_count')
-
-    aggrResult = tgapi.validate_tgen_traffic(traffic_details = traffic_params, mode = 'aggregate', comp_type = 'packet_count')
     if aggrResult:
         st.log('Traffic verification passed for mode aggregate')
     else:
@@ -991,8 +982,6 @@ def test_L3Scl_004(L3Scl_fixture_004):
         st.log('Traffic verification failed for mode aggregate')
 
     traffic_params = {'1': {'tx_ports' : [vars.T1D2P1], 'tx_obj' : [tg2],'exp_ratio' : [1],'rx_ports' : [vars.T1D1P1], 'rx_obj' : [tg1]}}
-    aggrResult = tgapi.validate_tgen_traffic(traffic_details = traffic_params, mode = 'aggregate', comp_type = 'packet_count')
-
     aggrResult = tgapi.validate_tgen_traffic(traffic_details = traffic_params, mode = 'aggregate', comp_type = 'packet_count')
     if aggrResult:
         st.log('Traffic verification passed for mode aggregate')
@@ -1032,7 +1021,7 @@ def test_L3Scl_004(L3Scl_fixture_004):
     st.log("BOUND_STREAM: " + str(tr2))
     st.log("BOUND_STREAM: " + str(tr3))
     st.log("BOUND_STREAM: " + str(tr4))
-    res = tg1.tg_traffic_control(action='run',
+    tg1.tg_traffic_control(action='run',
                                  handle=[tr1['stream_id'], tr2['stream_id'], tr3['stream_id'], tr4['stream_id']])
     st.wait(5)
     res = tg1.tg_traffic_control(action='stop',
@@ -1097,7 +1086,7 @@ def test_L3Scl_004(L3Scl_fixture_004):
         st.log("BOUND_STREAM: " + str(tr2))
         st.log("BOUND_STREAM: " + str(tr3))
         st.log("BOUND_STREAM: " + str(tr4))
-        res = tg1.tg_traffic_control(action='run',
+        tg1.tg_traffic_control(action='run',
                                      handle=[tr1['stream_id'], tr2['stream_id'], tr3['stream_id'], tr4['stream_id']])
         st.wait(5)
         res = tg1.tg_traffic_control(action='stop',
@@ -1204,8 +1193,6 @@ def test_L3Scl_001(L3Scl_fixture_001):
                   'as_path'    : 'as_seq:100',
                   'prefix'     : data.prefix1
                 }
-    ctrl_start = { 'mode' : 'start'}
-    #ctrl_stop = { 'mode' : 'stop'}
 
     conf_var2 = { 'mode'                 : 'enable',
                  'active_connect_enable' : '1',
@@ -1219,7 +1206,6 @@ def test_L3Scl_001(L3Scl_fixture_001):
                   'prefix'     : data.prefix2
                 }
     ctrl_start = { 'mode' : 'start'}
-    #ctrl_stop = { 'mode' : 'stop'}
 
     # Configuring the BGP router.
     bgp_rtr2 = tgapi.tg_bgp_config(tg = tg2,
@@ -1514,9 +1500,6 @@ def test_L3Scl_ECMP_007(L3Scl_fixture_007):
                   'as_path'    : 'as_seq:100',
                   'prefix'     : data.prefix1
                 }
-    ctrl_start = { 'mode' : 'start'}
-    #ctrl_stop = { 'mode' : 'stop'}
-
     conf_var2 = { 'mode'                 : 'enable',
                  'active_connect_enable' : '1',
                  'local_as'              : '200',
@@ -1530,7 +1513,6 @@ def test_L3Scl_ECMP_007(L3Scl_fixture_007):
                   'prefix'     : data.prefix2
                 }
     ctrl_start = { 'mode' : 'start'}
-    #ctrl_stop = { 'mode' : 'stop'}
     # Configuring the BGP router.
     bgp_rtr2 = tgapi.tg_bgp_config(tg = tg2,
         handle    = h2['handle'],

@@ -189,7 +189,7 @@ class ScapyPacket(object):
         self.os_system("sysctl -w net.ipv6.conf.{}.accept_ra=0".format(iface_rx))
         self.os_system("sysctl -w net.ipv6.conf.{}.forwarding=1".format(iface))
         #self.os_system("sysctl -w net.ipv6.conf.{}.accept_ra=1".format(iface))
-        self.os_system("sysctl -w net.ipv6.conf.all.forwarding=0")
+        #self.os_system("sysctl -w net.ipv6.conf.all.forwarding=0")
 
     def __del__(self):
         self.logger.info("packet cleanup todo: ", self.iface)

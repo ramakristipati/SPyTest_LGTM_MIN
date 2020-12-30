@@ -19,6 +19,6 @@ def extend(dut):
         st.config(dut, "config feature state nat enabled")
     if not st.is_feature_supported("sflow-default-enabled", dut):
         st.config(dut, "config feature state sflow enabled")
-    #st.config(dut, "configure lldp status disabled", type='lldp')
+    st.config(dut, "configure lldp status disabled", type='lldp')
     remove_vlan_1(dut, "base config")
 

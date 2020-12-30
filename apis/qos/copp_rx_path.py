@@ -2,7 +2,6 @@
 # @author : Prudvi Mangadu (prudvi.mangadu@broadcom.com)
 
 from spytest import st
-from utilities.common import filter_and_select
 
 FILE_PATH = "/proc/bcm/knet/rx_drop"
 
