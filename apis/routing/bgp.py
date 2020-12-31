@@ -4071,7 +4071,7 @@ def config_bgp(dut, **kwargs):
         nexthop_self = kwargs.get("nexthop_self", True) if "nexthop_self" in config_type_list else None
         pswd = True if "pswd" in config_type_list else False
         update_src = kwargs.get("update_src", "") if "update_src" in config_type_list else ""
-        update_src_intf = get_interface_number_from_name(update_src_intf)
+        # update_src_intf = get_interface_number_from_name(update_src_intf)
         bfd = True if "bfd" in config_type_list else False
         route_map = True if "routeMap" in config_type_list else False
         default_originate = True if "default_originate" in config_type_list else False
@@ -4626,7 +4626,7 @@ def config_bgp(dut, **kwargs):
                         neigh_data_sub["transport"] = dict()
                         neigh_data_sub["transport"]["config"] = dict()
                         if config_cmd != 'no':
-                            neigh_data_sub["transport"]["config"].update({"local-address": update_src})
+                            neigh_data_sub["transport"]["config"].update({"local-address": update_src_intf})
                             neigh_data.update(neigh_data_sub)
                         else:
                             if neighbor and not peergroup:

@@ -97,8 +97,11 @@ class Feature(object):
 
     def init_202012(self):
         self.init_upstream()
-        self.set_unsupported("system-status")
+        self.set_unsupported("system-status", "dpb")
         self.set_unsupported("swss-copp-config")
+        self.set_unsupported("vlan-range")
+        self.set_unsupported("config-mac-aging_time-command")
+        self.set_unsupported("show-mac-aging-time-command")
 
     def init_upstream(self):
         self.init_master()
