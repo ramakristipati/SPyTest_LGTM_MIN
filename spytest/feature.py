@@ -1,5 +1,5 @@
 
-feature_groups = ["broadcom", "master", "upstream", "201911"]
+feature_groups = ["broadcom", "master", "upstream", "201911", "202012"]
 
 feature_names = [
     "port-group",
@@ -64,6 +64,8 @@ class Feature(object):
             self.init_master()
         elif feature_group == "201911":
             self.init_201911()
+        elif feature_group == "202012":
+            self.init_202012()
         elif feature_group == "upstream":
             self.init_upstream()
         else:
@@ -92,6 +94,11 @@ class Feature(object):
 
     def init_201911(self):
         self.set_unsupported(feature_names)
+
+    def init_202012(self):
+        self.init_upstream()
+        self.set_unsupported("system-status")
+        self.set_unsupported("swss-copp-config")
 
     def init_upstream(self):
         self.init_master()

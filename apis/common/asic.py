@@ -10,6 +10,9 @@ def bcm_config(dut, cmd, skip_error_check=True):
     if not st.is_feature_supported("bcmcmd", dut): return ""
     return st.config(dut, cmd, skip_error_check=skip_error_check)
 
+def dump_l3_intf(dut):
+    bcm_show(dut, "bcmcmd 'l3 intf show'")
+
 def dump_l3_egress(dut):
     bcm_show(dut, "bcmcmd 'l3 ecmp egress show'")
 
@@ -109,6 +112,23 @@ def get_l2_out(dut, mac):
 
 def get_l3_out(dut, mac):
   return exec_search(dut,'l3 egress show',["port"],{"mac":mac})
+
+def dump_ecmp_info(dut):
+    cmdlist = ["l3 ecmp egress show",
+    "g raw RTAG7_HASH_FIELD_BMAP_1",
+    "g raw RTAG7_HASH_FIELD_BMAP_2",
+    "g raw RTAG7_HASH_FIELD_BMAP_3",
+    "g raw RTAG7_IPV4_TCP_UDP_HASH_FIELD_BMAP_1",
+    "g raw RTAG7_IPV4_TCP_UDP_HASH_FIELD_BMAP_2",
+    "g raw RTAG7_IPV6_TCP_UDP_HASH_FIELD_BMAP_1",
+    "g raw RTAG7_IPV6_TCP_UDP_HASH_FIELD_BMAP_2",
+    "g raw RTAG7_HASH_SEED_A",
+    "g raw RTAG7_HASH_SEED_B",
+    "d chg RTAG7_PORT_BASED_HASH",
+    "g raw HASH_CONTROL",
+    "l3 egress show"]
+    for cmd in cmdlist:
+        bcm_show(dut, cmd)
 
 def dump_threshold_info(dut, test, platform, mode):
     """
